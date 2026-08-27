@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌑 Cermin Hati — Seberapa Jujur Kamu pada Dirimu?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Georgia, 'Times New Roman', serif;
+        }
+
+        body {
+            background: linear-gradient(180deg, #0d0d1a, #1a1a2e, #1f2937);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        .judul {
+            text-align: center;
+            margin-bottom: 35px;
+            padding-top: 20px;
+        }
+
+        .judul h1 {
+            font-size: 1.7rem;
+            color: #c084fc;
+            text-shadow: 0 0 20px rgba(192, 132, 252, 0.4);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .judul p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+
+        .kartu {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(192, 132, 252, 0.15);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: all 0.4s ease;
+        }
+
+        .kartu:hover {
+            border-color: rgba(192, 132, 252, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nomor {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #c084fc, #a855f7);
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 0.9rem;
+            box-shadow: 0 0 10px rgba(192, 132, 252, 0.3);
+        }
+
+        .pertanyaan {
+            font-size: 1.08rem;
+            font-weight: 500;
+            margin-bottom: 22px;
+            color: #f3f4f6;
+            line-height: 1.7;
+        }
+
+        .pilihan {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pilihan-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #d1d5db;
+            padding: 14px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 0.98rem;
+        }
+
+        .pilihan-btn:hover {
+            background: rgba(192, 132, 252, 0.1);
+            border-color: #c084fc;
+            color: #e9d5ff;
+            padding-left: 24px;
+        }
+
+        .pilihan-btn.terpilih {
+            background: rgba(192, 132, 252, 0.2);
+            border-color: #c084fc;
+            color: #f3e8ff;
+        }
+
+        .navigasi {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            padding: 13px 26px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .kembali-btn {
+            background: rgba(255,255,255,0.08);
+            color: #9ca3af;
+        }
+
+        .kembali-btn:hover {
+            background: rgba(255,255,255,0.12);
+            color: #e5e7eb;
+        }
+
+        .lanjut-btn {
+            background: linear-gradient(90deg, #c084fc, #a855f7);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(192, 132, 252, 0.3);
+        }
+
+        .lanjut-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(192, 132, 252, 0.5);
+        }
+
+        .lanjut-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .hasil-kartu {
+            text-align: center;
+            padding: 45px 28px;
+            display: none;
+        }
+
+        .skor-besar {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: #c084fc;
+            text-shadow: 0 0 30px rgba(192, 132, 252, 0.5);
+            margin: 20px 0;
+        }
+
+        .hasil-teks {
+            font-size: 1.1rem;
+            margin: 20px 0;
+            line-height: 1.8;
+            color: #d1d5db;
+        }
+
+        .rahasia {
+            background: rgba(192, 132, 252, 0.05);
+            border: 1px dashed rgba(192, 132, 252, 0.3);
+            padding: 22px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 0.98rem;
+            color: #d8b4fe;
+            line-height: 1.8;
+        }
+
+        /* HADIAH KHUSUS — SKOR > 80% */
+        .hadiah-kotak {
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.15), rgba(236, 72, 153, 0.1));
+            border: 2px solid #c084fc;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            animation: berkilau 2s infinite alternate;
+        }
+
+        @keyframes berkilau {
+            from { box-shadow: 0 0 15px rgba(192, 132, 252, 0.3); }
+            to { box-shadow: 0 0 30px rgba(192, 132, 252, 0.5), 0 0 45px rgba(236, 72, 153, 0.2); }
+        }
+
+        .hadiah-judul {
+            font-size: 1.3rem;
+            color: #f0abfc;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .surat {
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid #c084fc;
+            font-style: italic;
+            color: #e5e7eb;
+            text-align: left;
+            line-height: 1.9;
+            margin: 15px 0;
+        }
+
+        .progress {
+            width: 100%;
+            height: 5px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 3px;
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #c084fc, #ec4899);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .identitas {
+            text-align: center;
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 500px) {
+            .judul h1 { font-size: 1.4rem; }
+            .kartu { padding: 20px; }
+            .pertanyaan { font-size: 1rem; }
+            .skor-besar { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="judul">
+            <h1>🌑 Cermin Hati</h1>
+            <p>Seberapa jujur kamu pada dirimu sendiri? Jawab pelan-pelan... 🥀</p>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar" style="width: 5%;"></div>
+        </div>
+
+        <!-- AREA KUIS -->
+        <div id="kuisArea">
+            <div class="kartu" id="kartuPertanyaan">
+                <div class="pertanyaan">
+                    <span class="nomor" id="nomorSoal">1</span>
+                    <span id="teksPertanyaan"></span>
+                </div>
+
+                <div class="pilihan" id="pilihanArea"></div>
+
+                <div class="navigasi">
+                    <button class="nav-btn kembali-btn" id="kembaliBtn" onclick="soalSebelumnya()" style="display:none;">← Kembali</button>
+                    <button class="nav-btn lanjut-btn" id="lanjutBtn" onclick="soalBerikutnya()" disabled>Selanjutnya →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AREA HASIL -->
+        <div class="kartu hasil-kartu" id="hasilArea">
+            <h2>🌙 CERMIN HATI — SELESAI</h2>
+            <div class="skor-besar" id="skorAkhir">???%</div>
+            <p class="hasil-teks" id="teksHasil"></p>
+            <div class="rahasia" id="rahasiaTeks"></div>
+            
+            <!-- HADIAH KHUSUS (muncul jika skor > 80%) -->
+            <div class="hadiah-kotak" id="hadiahArea" style="display:none;">
+                <div class="hadiah-judul">🎁 HADIAH KHUSUS — Kamu Berhak Menerima Ini ✨</div>
+                <p style="color:#e9d5ff; margin-bottom:15px;">Karena kamu sangat jujur pada dirimu, ini pesan untukmu:</p>
+                <div class="surat" id="suratUntukmu">
+                    "Hai diriku...<br><br>
+                    Aku tahu selama ini kamu berjuang sendirian. Aku tahu kamu sering menangis di tempat yang sepi. Aku tahu kamu menyembunyikan banyak hal hanya agar orang lain tidak khawatir.<br><br>
+                    Tapi dengar ini: <strong>Kamu sudah berusaha sekuat tenaga. Kamu sudah hebat. Kamu tidak perlu selalu kuat. Tidak apa-apa untuk lelah. Tidak apa-apa untuk tidak selalu baik-baik saja.</strong><br><br>
+                    Kamu berharga apa adanya. Bukan karena apa yang kamu capai, tapi karena kamu ada. Dan itu sudah cukup. Jangan pernah menyerah, ya. Aku bangga padamu — hari ini, besok, dan selamanya."<br><br>
+                    — Dari dirimu yang lebih tua, yang lebih mengerti kamu 💜
+                </div>
+                <p style="color:#c084fc; font-size:0.9rem; margin-top:10px;">💜 Simpan halaman ini. Buka lagi saat kamu merasa lelah. Kamu tidak sendirian.</p>
+            </div>
+
+            <button class="nav-btn lanjut-btn" style="margin-top:30px; width:100%;" onclick="mulaiUlang()">🔄 Coba Lagi</button>
+        </div>
+
+        <div class="identitas">
+            ━━━━━━━━━━━━━━━━━━━━━<br>
+            🌑 Dibuat oleh ikromwalidaini 🌑<br>
+            ━━━━━━━━━━━━━━━━━━━━━
+        </div>
+    </div>
+
+    <script>
+        // 📋 20 SOAL — 10 menjebak + 10 menyentuh hati
+        const soal = [
+            // === BAGIAN 1: Menjebak tapi mulai menyentuh ===
+            {
+                tanya: "Apakah kamu yakin bisa menjawab semua pertanyaan ini dengan jujur, tanpa menyembunyikan satu hal pun dari dirimu sendiri?",
+                pilihan: ["✨ Ya, saya akan jujur sepenuhnya", "🤔 Mungkin ada yang masih saya sembunyikan", "🌑 Tidak, saya takut jujur pada diri sendiri"],
+                bobot: [5, 7, 10],
+                rahasia: "Yang menjawab 'takut jujur' justru orang yang paling siap untuk mulai jujur 🖤"
+            },
+            {
+                tanya: "Ketika kamu sendirian di malam hari, apa yang paling sering kamu rasakan?",
+                pilihan: ["😌 Tenang dan damai", "🌧️ Kesepian yang sulit dijelaskan", "🤔 Banyak pikiran yang tak berhenti"],
+                bobot: [4, 10, 8],
+                rahasia: "Yang merasa kesepian sebenarnya orang yang paling rindu dihargai 🥀"
+            },
+            {
+                tanya: "Seberapa sering kamu tersenyum di depan orang lain, padahal hatimu sedang menangis?",
+                pilihan: ["🎭 Hampir selalu", "😐 Kadang saja", "✨ Tidak pernah, saya tulus"],
+                bobot: [10, 6, 3],
+                rahasia: "Yang tersenyum di depan orang lain tapi menangis di dalam — hatinya paling lembut dan kuat sekaligus 🦋"
+            },
+            {
+                tanya: "Apakah ada hal yang kamu maafkan, tapi kamu tidak pernah benar-benar melupakannya?",
+                pilihan: ["💔 Ya, banyak sekali", "⏳ Sedikit demi sedikit saya lupa", "✨ Tidak, kalau sudah maaf berarti sudah selesai"],
+                bobot: [10, 6, 4],
+                rahasia: "Yang tidak melupakan — dia bukan menyimpan dendam, dia menyimpan pelajaran 📖"
+            },
+            {
+                tanya: "Apakah kamu merasa orang lain benar-benar mengenal siapa dirimu yang sebenarnya?",
+                pilihan: ["✅ Ya, ada yang mengenal saya", "🌑 Tidak ada yang benar-benar tahu", "🤔 Bahkan saya sendiri kadang bingung"],
+                bobot: [4, 9, 10],
+                rahasia: "Yang bingung dengan dirinya sendiri — dia sedang tumbuh menjadi versi baru yang lebih indah 🌱"
+            },
+            {
+                tanya: "Apa yang paling kamu takutkan kehilangan?",
+                pilihan: ["❤️ Orang yang kamu sayang", "✨ Harapan dan mimpimu", "🪶 Bagian dari dirimu sendiri"],
+                bobot: [7, 8, 10],
+                rahasia: "Yang takut kehilangan bagian dirinya — dia sudah mulai sadar betapa berharganya dirinya 💎"
+            },
+            {
+                tanya: "Kalau kamu bisa kembali ke masa lalu, apakah kamu akan mengubah pilihan yang paling menyakitkanmu?",
+                pilihan: ["🔮 Ya, saya akan ubah", "🌙 Tidak, itu yang membentuk saya sekarang", "🤔 Saya tidak berani melihat ke belakang"],
+                bobot: [6, 10, 8],
+                rahasia: "Yang menerima masa lalu tanpa mengubah apa pun — dia sudah mulai sembuh 🌿"
+            },
+            {
+                tanya: "Seberapa sering kamu merasa 'cukup' — cukup baik, cukup berharga, cukup berarti?",
+                pilihan: ["🌟 Hampir selalu", "🌤️ Kadang-kadang saja", "🌑 Hampir tidak pernah"],
+                bobot: [3, 7, 10],
+                rahasia: "Yang merasa tidak pernah cukup — dia sebenarnya orang yang paling berusaha menjadi lebih baik 💫"
+            },
+            {
+                tanya: "Apakah kamu memaafkan dirimu sendiri untuk kesalahan yang pernah kamu buat?",
+                pilihan: ["✨ Ya, sudah", "⏳ Saya sedang berusaha", "🌑 Belum... saya masih menyalahkan diri sendiri"],
+                bobot: [5, 8, 10],
+                rahasia: "Yang belum memaafkan diri sendiri — dia orang yang paling bertanggung jawab, tapi terlalu keras pada dirinya 🤍"
+            },
+            {
+                tanya: "Menurutmu, apakah ada alasan mengapa kamu harus tetap bertahan sampai hari ini?",
+                pilihan: ["💪 Ya, ada alasan kuat", "🌤️ Saya belum menemukannya, tapi saya mencari", "🌑 Saya tidak tahu lagi"],
+                bobot: [6, 9, 10],
+                rahasia: "Yang mencari alasan bertahan — dia sedang menciptakan alasan terindah untuk hidupnya 🌅"
+            },
+
+            // === BAGIAN 2: Lebih dalam, lebih menyentuh hati ===
+            {
+                tanya: "Pernahkah kamu merasa lelah bukan karena tubuhmu, tapi karena hatimu?",
+                pilihan: ["🌑 Ya, sangat sering", "🌤️ Kadang saja", "✨ Tidak, saya baik-baik saja"],
+                bobot: [10, 7, 4],
+                rahasia: "Kelelahan hati adalah tanda kamu terlalu kuat terlalu lama. Tidak apa-apa istirahat 🕯️"
+            },
+            {
+                tanya: "Apakah ada mimpi yang kamu sembunyikan karena takut dikatakan tidak mungkin?",
+                pilihan: ["💭 Ya, ada yang saya simpan sendiri", "🌤️ Saya pernah bicara, tapi tidak didukung", "✨ Tidak, saya berani mengejar semua mimpi saya"],
+                bobot: [10, 8, 5],
+                rahasia: "Mimpi yang disembunyikan bukan berarti mustahil — itu mimpi yang paling berarti bagimu 🌟"
+            },
+            {
+                tanya: "Kapan terakhir kali kamu berkata pada dirimu sendiri: 'Kamu sudah berusaha dengan sangat baik'?",
+                pilihan: ["🌑 Saya tidak pernah berkata begitu", "📆 Sudah lama sekali", "✨ Belum lama ini"],
+                bobot: [10, 8, 5],
+                rahasia: "Kamu tidak perlu menunggu orang lain memuji dirimu. Kamu berhak memuji dirimu sendiri, setiap hari 💛"
+            },
+            {
+                tanya: "Apakah kamu merasa dimengerti oleh orang-orang terdekatmu?",
+                pilihan: ["❤️ Ya, mereka mengerti saya", "🌤️ Sebagian saja", "🌑 Tidak, saya merasa sendirian bahkan di antara keramaian"],
+                bobot: [5, 8, 10],
+                rahasia: "Merasa sendirian di keramaian berarti jiwamu lebih dalam dari orang-orang di sekitarmu 🌊"
+            },
+            {
+                tanya: "Kalau kamu bisa memeluk dirimu yang dulu yang sedang terluka, apa yang akan kamu katakan?",
+                pilihan: ["🫶 'Maaf aku membiarkanmu terluka'", "🌿 'Kita akan melewati ini, percayalah'", "✨ 'Semua rasa sakit ini akan bermakna'"],
+                bobot: [8, 9, 10],
+                rahasia: "Kata-kata yang ingin kamu katakan pada dirimu yang dulu — itulah kata yang paling perlu kamu dengar sekarang 🤗"
+            },
+            {
+                tanya: "Apakah kamu masih menunggu permintaan maaf dari orang yang menyakitimu?",
+                pilihan: ["⏳ Ya, saya masih menunggu", "🌙 Saya ingin, tapi saya mulai belajar melepaskan", "✨ Saya sudah memaafkan, tanpa menunggu maafnya"],
+                bobot: [8, 9, 10],
+                rahasia: "Memaafkan tanpa menunggu permintaan maaf — itu kebebasan tertinggi yang bisa kamu berikan pada dirimu 🕊️"
+            },
+            {
+                tanya: "Apakah kamu merasa hidupmu berharga bahkan saat kamu tidak menghasilkan apa-apa?",
+                pilihan: ["🌑 Tidak, saya merasa tidak berguna kalau tidak berprestasi", "🌤️ Kadang saya ragu", "✨ Ya, saya berharga hanya karena saya ada"],
+                bobot: [10, 7, 5],
+                rahasia: "Nilaimu tidak ditentukan oleh apa yang kamu hasilkan. Kamu berharga apa adanya, tanpa syarat 💜"
+            },
+            {
+                tanya: "Apa hal tersulit yang pernah kamu lalui yang tidak pernah kamu ceritakan pada siapa pun?",
+                pilihan: ["🌑 Masih saya simpan sendiri", "🌤️ Saya sudah mulai bercerita sedikit", "✨ Saya sudah cerita pada orang yang saya percaya"],
+                bobot: [10, 7, 4],
+                rahasia: "Hal yang paling berat yang kamu bawa sendirian — itu bukti kekuatanmu yang luar biasa 🗝️"
+            },
+            {
+                tanya: "Kalau kamu tahu ini hari terakhirmu, apa yang paling kamu sesalkan tidak pernah kamu katakan?",
+                pilihan: ["💌 'Aku sayang kamu' pada orang yang kamu sayang", "🗣️ 'Maaf' pada dirimu sendiri", "✨ 'Terima kasih' pada kehidupan itu sendiri"],
+                bobot: [7, 10, 9],
+                rahasia: "Hal yang takut kamu katakan — itulah hal yang paling perlu diucapkan, selagi masih ada waktu ⏳"
+            },
+            {
+                tanya: "Pertanyaan terakhir: Apakah kamu mulai menyadari bahwa kamu jauh lebih kuat dari yang kamu kira?",
+                pilihan: ["✨ Ya, saya mulai sadar", "🌤️ Saya ingin percaya begitu", "🌑 Saya masih ragu"],
+                bobot: [8, 9, 10],
+                rahasia: "Mulai percaya — itu langkah pertama menuju menjadi dirimu yang paling kuat. Kamu sudah melangkahnya 🚀🖤"
+            }
+        ];
+
+        let nomor = 0;
+        let skor = 0;
+        let jawabanTerpilih = -1;
+
+        function tampilkanSoal() {
+            jawabanTerpilih = -1;
+            document.getElementById('nomorSoal').textContent = nomor + 1;
+            document.getElementById('teksPertanyaan').textContent = soal[nomor].tanya;
+            
+            const pilihanArea = document.getElementById('pilihanArea');
+            pilihanArea.innerHTML = '';
+            
+            soal[nomor].pilihan.forEach((pilihan, indeks) => {
+                const btn = document.createElement('button');
+                btn.className = 'pilihan-btn';
+                btn.textContent = pilihan;
+                btn.onclick = () => pilihJawaban(btn, indeks);
+                pilihanArea.appendChild(btn);
+            });
+
+            document.getElementById('lanjutBtn').disabled = true;
+            document.getElementById('kembaliBtn').style.display = nomor === 0 ? 'none' : 'inline-block';
+            document.getElementById('progressBar').style.width = ((nomor + 1) * 5) + '%';
+        }
+
+        function pilihJawaban(elemen, indeks) {
+            jawabanTerpilih = indeks;
+            document.querySelectorAll('.pilihan-btn').forEach(b => b.classList.remove('terpilih'));
+            elemen.classList.add('terpilih');
+            document.getElementById('lanjutBtn').disabled = false;
+        }
+
+        function soalBerikutnya() {
+            if (jawabanTerpilih === -1) return;
+            
+            skor += soal[nomor].bobot[jawabanTerpilih];
+            nomor++;
+
+            if (nomor >= soal.length) {
+                tampilkanHasil();
+                return;
+            }
+
+            tampilkanSoal();
+        }
+
+        function soalSebelumnya() {
+            if (nomor > 0) {
+                nomor--;
+                skor = Math.max(0, skor - soal[nomor].bobot[jawabanTerpilih]);
+                tampilkanSoal();
+            }
+        }
+
+        function tampilkanHasil() {
+            document.getElementById('kuisArea').style.display = 'none';
+            document.getElementById('hasilArea').style.display = 'block';
+            
+            const skorMaksimal = soal.length * 10;
+            const skorPersen = Math.round((skor / skorMaksimal) * 100);
+            document.getElementById('skorAkhir').textContent = skorPersen + '%';
+
+            let teks = '';
+            let rahasiaAkhir = '';
+
+            if (skorPersen >= 85) {
+                teks = '🌑 Kamu adalah orang yang sangat dalam. Kamu telah belajar jujur pada dirimu sendiri — hal yang paling sulit dilakukan oleh banyak orang. Kamu melihat hal yang orang lain tidak lihat. Kamu merasakan hal yang orang lain pura-pura tidak rasakan. Kamu istimewa, dan kejujuranmu adalah kekuatan terbesarmu.';
+                rahasiaAkhir = '🖤 RAHASIA HATIMU: Kamu sudah berjuang terlalu lama sendirian. Sekarang saatnya menerima kasih sayang — termasuk dari dirimu sendiri. Kamu tidak perlu selalu kuat. Kamu boleh lelah. Kamu boleh beristirahat. Dan kamu tetap berharga, apa pun yang terjadi.';
+            } else if (skorPersen >= 60) {
+                teks = '🌙 Kamu sedang dalam perjalanan menemukan dirimu. Kamu mulai berani melihat apa yang selama ini kamu sembunyikan. Masih ada bagian darimu yang takut untuk jujur, tapi kamu sudah melangkah jauh dibandingkan dirimu yang dulu. Teruslah berjalan, kamu berada di jalan yang benar.';
+                rahasiaAkhir = '🌿 RAHASIA HATIMU: Tidak apa-apa untuk belum selesai. Hidup bukan tentang menjadi sempurna, tapi tentang menjadi dirimu sendiri — satu langkah demi satu langkah. Kamu sedang tumbuh, dan pertumbuhan itu sering terasa menyakitkan, tapi hasilnya akan indah.';
+            } else {
+                teks = '✨ Kamu orang yang cerah dan berhati ringan. Kamu mencoba melihat sisi baik dari segalanya. Tapi di kedalaman hatimu, ada hal yang kamu sembunyikan bahkan dari dirimu sendiri. Tidak apa-apa untuk mulai jujur, pelan-pelan saja. Kamu tidak perlu terburu-buru.';
+                rahasiaAkhir = '☀️ RAHASIA HATIMU: Menyembunyikan perasaan bukan berarti kamu lemah. Tapi membiarkan dirimu merasakan — itulah tanda kekuatan yang sesungguhnya. Beri dirimu izin untuk merasa, untuk terluka, dan untuk sembuh.';
+            }
+
+            document.getElementById('teksHasil').textContent = teks;
+            document.getElementById('rahasiaTeks').textContent = rahasiaAkhir;
+
+            // === HADIAH: Muncul jika skor > 80% ===
+            if (skorPersen > 80) {
+                document.getElementById('hadiahArea').style.display = 'block';
+            }
+        }
+
+        function mulaiUlang() {
+            nomor = 0;
+            skor = 0;
+            jawabanTerpilih = -1;
+            document.getElementById('kuisArea').style.display = 'block';
+            document.getElementById('hasilArea').style.display = 'none';
+            tampilkanSoal();
+        }
+
+        // MULAI
+        tampilkanSoal();
+    </script>
+</body>
+</html>
